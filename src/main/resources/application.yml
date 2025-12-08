@@ -1,0 +1,18 @@
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      enabled: true
+
+logging:
+  pattern:
+    console: "%5level %d{yyyy-MM-dd HH:mm:ss.SSS} %logger - %msg%n"
+
+converter:
+  timeout-seconds: 60
