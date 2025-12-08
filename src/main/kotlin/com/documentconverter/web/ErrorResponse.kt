@@ -1,4 +1,4 @@
-package com.example.documentconverter.web
+package com.documentconverter.web
 
 data class ErrorResponse(
     val error: String,
