@@ -1,4 +1,4 @@
-package com.example.documentconverter
+package com.documentconverter
 
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertFalse
