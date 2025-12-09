@@ -26,6 +26,10 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    // добавляем Testcontainers
+    testImplementation("org.testcontainers:junit-jupiter:1.20.1")
+    testImplementation("org.testcontainers:testcontainers:1.20.1")
 }
 
 tasks.withType<Test> {
