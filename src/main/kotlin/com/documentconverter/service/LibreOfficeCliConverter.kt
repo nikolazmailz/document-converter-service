@@ -1,5 +1,6 @@
 package com.documentconverter.service
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.springframework.stereotype.Component
@@ -9,7 +10,11 @@ import java.util.concurrent.TimeUnit
 
 @Component
 class LibreOfficeCliConverter : LibreOfficeConverter {
+
+    private val log = KotlinLogging.logger {}
+
     override suspend fun convertDocxToPdf(docx: ByteArray): ByteArray = withContext(Dispatchers.IO) {
+        log.info { "convertDocxToPdf ${docx.size} \n $docx \n "}
         val tempDir = Files.createTempDirectory("libreoffice-converter")
         val outputDir = Files.createDirectories(tempDir.resolve("output"))
         val inputFile = tempDir.resolve("input.docx")
@@ -28,6 +33,9 @@ class LibreOfficeCliConverter : LibreOfficeConverter {
                 inputFile.toAbsolutePath().toString()
             ).redirectErrorStream(true).start()
 
+            log.info { "process $process \n"}
+            log.info { "process.info() ${process.info()} \n"}
+
             val finished = process.waitFor(60, TimeUnit.SECONDS)
             if (!finished) {
                 process.destroyForcibly()
@@ -36,13 +44,16 @@ class LibreOfficeCliConverter : LibreOfficeConverter {
 
             if (process.exitValue() != 0) {
                 val output = process.inputStream.bufferedReader().use { it.readText() }
+                log.error { "output $output \n"}
                 throw IllegalStateException("LibreOffice conversion failed: $output")
             }
 
             val pdfFile = Files.list(outputDir)
                 .filter { path -> path.fileName.toString().endsWith(".pdf", ignoreCase = true) }
                 .findFirst()
-                .orElseThrow { IllegalStateException("No PDF file generated") }
+                .orElseThrow {
+                    log.error { "No PDF file generated \n"}
+                    IllegalStateException("No PDF file generated") }
                 .toFile()
 
             Files.readAllBytes(pdfFile.toPath())

@@ -25,6 +25,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
+    // log
+    implementation("io.github.oshai:kotlin-logging-jvm:5.1.0")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     // добавляем Testcontainers
