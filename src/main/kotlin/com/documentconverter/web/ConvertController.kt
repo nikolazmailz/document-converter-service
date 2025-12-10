@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/convert")
 class ConvertController(
     private val libreOfficeConverter: LibreOfficeConverter
 ) {
@@ -20,7 +19,7 @@ class ConvertController(
     @PostMapping(
         "/convert/docx-to-pdf",
         consumes = [MediaType.APPLICATION_OCTET_STREAM_VALUE],
-        produces = [MediaType.APPLICATION_PDF_VALUE]
+//        produces = [MediaType.APPLICATION_PDF_VALUE]
     )
     suspend fun convertDocxToPdf(@RequestBody docx: ByteArray): ResponseEntity<ByteArray> {
         val pdfBytes = libreOfficeConverter.convertDocxToPdf(docx)
